@@ -1,6 +1,6 @@
 import { Color4, Quaternion, Vector3 } from "@dcl/sdk/math";
-import { CarFactory } from "@vegascity/racetrack/src/car";
-import { GameMode, TrackManager } from "@vegascity/racetrack/src/racetrack";
+import { Car, CarFactory } from "@vegascity/racetrack/src/car";
+import { GameMode, InputManager, TrackManager } from "@vegascity/racetrack/src/racetrack";
 import { movePlayerTo, triggerSceneEmote } from "~system/RestrictedActions"
 import { setup } from "@vegascity/racetrack/src/utils";
 import { Material, MeshRenderer, Transform, engine } from "@dcl/sdk/ecs";
@@ -9,13 +9,17 @@ export function main() {
     // set up the racetrack npm library
     setup(movePlayerTo, triggerSceneEmote)
 
+    // define an input manager
+    new InputManager()
+
     // define a track manager
     new TrackManager({
+        position: Vector3.Zero(),
         gameMode: GameMode.DRIVE
     })
 
     // create a car
-    CarFactory.create(Vector3.create(16, 2, 16), 0,
+    CarFactory.create(
         {
             mass: 150,
             accelerationF: 12,
@@ -42,8 +46,11 @@ export function main() {
             steeringWheelPosition: Vector3.create(0.80, 0.17, 0.57),
             firstPersonCagePosition: Vector3.create(-0.2, -1.2, 0),
             thirdPersonCagePosition: Vector3.create(0, 0, -1.1)
-        }
+        }, Vector3.create(16, 2, 16), 0, Vector3.Zero()
     )
+
+    // Set active car index
+    Car.activeCarIndex = 0
 
     // create a ground
     let groundEntity = engine.addEntity()
