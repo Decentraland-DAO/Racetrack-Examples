@@ -1,6 +1,6 @@
 import { Quaternion, Vector3 } from "@dcl/sdk/math";
-import { CarFactory } from "@vegascity/racetrack/src/car";
-import { GameMode, TrackManager } from "@vegascity/racetrack/src/racetrack";
+import { Car, CarFactory } from "@vegascity/racetrack/src/car";
+import { GameMode, InputManager, TrackManager } from "@vegascity/racetrack/src/racetrack";
 import { movePlayerTo, triggerSceneEmote } from "~system/RestrictedActions"
 import { setup } from "@vegascity/racetrack/src/utils";
 import * as trackData from "../data/track_01.json"
@@ -11,9 +11,13 @@ export function main() {
     // set up the racetrack npm library
     setup(movePlayerTo, triggerSceneEmote)
 
+    // define an input manager
+    new InputManager()
+
     // define a track manager
     new TrackManager({
         gameMode: GameMode.DRIVE,
+        position: Vector3.Zero(),
         rotation: Quaternion.fromEulerDegrees(0, 180, 0),
         trackConfigs: [
             {
@@ -28,7 +32,7 @@ export function main() {
     TrackManager.Load(trackGuid)
 
     // create a car
-    CarFactory.create(Vector3.create(30, 2, 8), 90,
+    CarFactory.create(
         {
             mass: 150,
             accelerationF: 12,
@@ -55,6 +59,9 @@ export function main() {
             steeringWheelPosition: Vector3.create(0.80, 0.17, 0.57),
             firstPersonCagePosition: Vector3.create(-0.2, -1.2, 0),
             thirdPersonCagePosition: Vector3.create(0, 0, -1.1)
-        }
+        }, Vector3.create(30, 2, 8), 90, Vector3.Zero()
     )
+
+    // Set active car index
+    Car.activeCarIndex = 0
 }
