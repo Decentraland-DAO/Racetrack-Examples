@@ -2,7 +2,7 @@
 
 ## 1.  Blender
 
-How the blender file is organised and why. Insights about the creation of the cars. [Video](https://drive.google.com/file/d/1NudqanMjWEJcDP0Q8aJ1CBFinV2fPFJa/view?usp=drive_link)
+How the blender file is organised and why. Insights about the creation of the cars. [Video](https://youtu.be/n1o-fYMdmJc)
     
 ## 2.  Car viewer example
  
