@@ -1,11 +1,10 @@
 import { Quaternion, Vector3 } from "@dcl/sdk/math";
-import { CarFactory } from "@vegascity/racetrack/src/car";
-import { GameMode, TrackManager } from "@vegascity/racetrack/src/racetrack";
+import { Car, CarFactory } from "@vegascity/racetrack/src/car";
+import { GameMode, InputManager, TrackManager } from "@vegascity/racetrack/src/racetrack";
 import { setup } from "@vegascity/racetrack/src/utils";
-import * as trackData from "../data/track_01.json"
 import { movePlayerTo, triggerSceneEmote } from "@vegascity/racetrack/src/utils/setup";
-import { GhostRecorder } from '@vegascity/racetrack/src/ghostCar'
 import { setupUi } from "./ui";
+import * as trackData from "../data/track_01.json"
 
 const trackGuid = "6B29FC40-CA47-1067-B31D-00DD010662DA"
 
@@ -14,9 +13,13 @@ export function main() {
     setup(movePlayerTo, triggerSceneEmote)
     setupUi()
 
+    // define an input manager
+    new InputManager()
+
     // define a track manager
     new TrackManager({
         gameMode: GameMode.RACE,
+        position: Vector3.Zero(),
         rotation: Quaternion.fromEulerDegrees(0, 180, 0),
         trackConfigs: [
             {
@@ -44,10 +47,9 @@ export function main() {
 
     // load the track
     TrackManager.Load(trackGuid)
- 
 
     // create a car
-    CarFactory.create(Vector3.create(30, 2, 8), 90,
+    CarFactory.create(
         {
             mass: 150,
             accelerationF: 12,
@@ -74,6 +76,9 @@ export function main() {
             steeringWheelPosition: Vector3.create(0.80, 0.17, 0.57),
             firstPersonCagePosition: Vector3.create(0, 0, -1.1),
             thirdPersonCagePosition: Vector3.create(0, 0, -1.1)
-        }
+        }, Vector3.create(30, 2, 8), 90, Vector3.Zero()
     )
+
+    // Set active car index
+    Car.activeCarIndex = 0
 }
